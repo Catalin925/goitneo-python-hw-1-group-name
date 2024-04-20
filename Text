@@ -1,0 +1,53 @@
+from datetime import datetime, timedelta
+from collections import defaultdict
+
+# Setting up the function & Retrieval of the Current Date
+
+def get_birthdays_per_week(users):
+
+    birthdays_per_week = defaultdict(list)
+
+    today = datetime.today().date()
+
+# Iterating through each user
+
+    for user in users:
+        name = user['name']
+        birthday = user['birthday'].date()
+        birthday_this_year = birthday.replace(year=today.year)
+
+# Converting to current year
+
+    if birthday_this_year < today:
+        birthday_this_year = birthday_this_year.replace(year = today.year + 1)
+
+    delta_days = (birthday_this_year - today).days
+    
+# If birthday is durring the weekend, move birthday to Monday
+
+    if 0 <= delta_days < 7:
+            bday = birthday_this_year.strftime('%A')
+            if bday == "Saturday" or bday == "Sunday":
+                bday = "Monday"
+            birthday_per_week[bday].append(name)
+    
+
+    birthdays_per_week[birthday_weekday].append(name)
+
+# Displaying the names and birthdays
+    for bday, names in birthday_per_week.items():
+        names_str = ', '.join(names)
+        print (bday + ':' + names_str)
+    return birthday_per_week
+
+
+users = [
+    {"name": "Catalin", "birthday": datetime(1993, 8, 27)},
+    {"name": "Bogdan", "birthday": datetime(1994, 4, 24)},
+    {"name": "Marius", "birthday": datetime(2000, 4, 25)},
+    {"name": "Alexandru", "birthday": datetime(1989, 5, 15)},
+    {"name": "Cosmin", "birthday": datetime(1991, 4, 21)} ]
+
+# Calling the function
+
+get_birthdays_per_week(users)
